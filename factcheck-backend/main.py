@@ -53,8 +53,13 @@ def fetch_google_fact_check(query):
     except Exception as e:
         return [{"error": f"Google Fact Check API Error: {str(e)}"}]
 
+from config import GOOGLE_API_KEY, GOOGLE_SEARCH_API_KEY, GOOGLE_SEARCH_ENGINE_ID
+
 def fetch_google_search_results(query):
-    """Fetch search results from Google if Fact Check API fails."""
+    """Fetch search results from Google if API keys are available."""
+    if not GOOGLE_SEARCH_API_KEY or not GOOGLE_SEARCH_ENGINE_ID:
+        return [{"error": "Google Search API is disabled. Provide API keys in `config.py`."}]
+
     url = f"https://www.googleapis.com/customsearch/v1?q={query}&key={GOOGLE_SEARCH_API_KEY}&cx={GOOGLE_SEARCH_ENGINE_ID}"
     try:
         response = requests.get(url)
@@ -62,7 +67,7 @@ def fetch_google_search_results(query):
 
         search_results = []
         if "items" in data:
-            for item in data["items"][:3]:  # Limit to 3 search results
+            for item in data["items"][:3]:
                 search_results.append({
                     "title": item["title"],
                     "snippet": item["snippet"],
@@ -71,6 +76,7 @@ def fetch_google_search_results(query):
         return search_results
     except Exception as e:
         return [{"error": f"Google Search API Error: {str(e)}"}]
+
 
 def fetch_wikipedia_summary(query):
     """Fetch a Wikipedia summary with better title matching."""
