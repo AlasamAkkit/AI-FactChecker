@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from transformers import pipeline
 from pydantic import BaseModel
+from config import GOOGLE_API_KEY, GOOGLE_SEARCH_API_KEY, GOOGLE_SEARCH_ENGINE_ID
 
 # Initialize FastAPI
 app = FastAPI()
@@ -19,10 +20,6 @@ app.add_middleware(
 
 # AI Model for Classification
 nli_model = pipeline("zero-shot-classification", model="microsoft/deberta-large-mnli")
-
-# Google Fact Check API Key (Replace with your actual key)
-GOOGLE_API_KEY = "AIzaSyCux1-iKy0bn97N-fG0b7fM_e7OWkzkU04"
-GOOGLE_SEARCH_ENGINE_ID = "11b0dbce918764f0d"
 
 # Wikipedia API
 wiki_api = wikipediaapi.Wikipedia(user_agent="FactCheckBot/1.0 (your-email@example.com)", language="en")
