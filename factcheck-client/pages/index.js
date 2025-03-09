@@ -23,7 +23,7 @@ export default function Home() {
       console.log("API Response:", data); // Debugging
 
       if (response.ok) {
-        setResult(data); // ✅ Ensures `result` gets updated
+        setResult(data); // Update the result state
       } else {
         setError(data.detail || "An unknown error occurred.");
       }
